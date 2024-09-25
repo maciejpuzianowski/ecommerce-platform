@@ -31,8 +31,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> addProduct(@RequestBody Product product) {
-        return new ResponseEntity<>(productService.addProduct(product), HttpStatus.CREATED);
+    public ResponseEntity<Product> addProduct(@RequestBody Product product, @RequestParam int initialQuantity) {
+        return new ResponseEntity<>(productService.addProduct(product, initialQuantity), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

@@ -2,6 +2,8 @@ package pl.mp.ecommerce_platform.product_service.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.mp.ecommerce_platform.inventory_service.model.Inventory;
+import pl.mp.ecommerce_platform.product_service.client.InventoryClient;
 import pl.mp.ecommerce_platform.product_service.exception.ProductNotFoundException;
 import pl.mp.ecommerce_platform.product_service.model.Product;
 import pl.mp.ecommerce_platform.product_service.repository.ProductRepository;
@@ -13,6 +15,9 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private InventoryClient inventoryClient;
+
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
@@ -21,7 +26,9 @@ public class ProductService {
         return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found"));
     }
 
-    public Product addProduct(Product product) {
+    public Product addProduct(Product product, int quantity) {
+        Product saved = productRepository.save(product);
+        inventoryClient.addInventory(new Inventory(null, saved.getId(), quantity));
         return productRepository.save(product);
     }
 
