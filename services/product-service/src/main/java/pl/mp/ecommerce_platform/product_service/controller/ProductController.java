@@ -26,7 +26,7 @@ public class ProductController {
         try {
             return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
         } catch (ProductNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
