@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: ../configs/
+          search-paths:
+            - 'product-service'
+            - 'order-service'
+            - 'inventory-service'
+            - 'payment-service'
+server:
+  port: 8888
