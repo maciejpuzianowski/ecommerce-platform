@@ -1,5 +1,7 @@
 package pl.mp.ecommerce_platform.product_service.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
+    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
+
     @Autowired
     private ProductService productService;
 
@@ -32,11 +36,13 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Product> addProduct(@RequestBody Product product, @RequestParam int initialQuantity) {
+        logger.info("Adding product: {}", product);
         return new ResponseEntity<>(productService.addProduct(product, initialQuantity), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+        logger.info("Updating product with ID: {}", id);
         try {
             return new ResponseEntity<>(productService.updateProduct(id, product), HttpStatus.OK);
         } catch (ProductNotFoundException e) {
@@ -46,6 +52,7 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
+        logger.info("Deleting product with ID: {}", id);
         try {
             Product removed = productService.deleteProduct(id);
             return new ResponseEntity<>(removed, HttpStatus.GONE);

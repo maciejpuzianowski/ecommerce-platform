@@ -4,16 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mp.ecommerce_platform.inventory_service.model.Inventory;
 import pl.mp.ecommerce_platform.order_service.client.InventoryClient;
+import pl.mp.ecommerce_platform.order_service.client.PaymentClient;
 import pl.mp.ecommerce_platform.order_service.client.ProductClient;
 import pl.mp.ecommerce_platform.order_service.exception.OutOfStockException;
 import pl.mp.ecommerce_platform.order_service.model.Order;
 import pl.mp.ecommerce_platform.order_service.repository.OrderRepository;
 import pl.mp.ecommerce_platform.product_service.model.Product;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -26,6 +25,9 @@ public class OrderService {
 
     @Autowired
     private InventoryClient inventoryClient;
+
+    @Autowired
+    private PaymentClient paymentClient;
 
     public Order placeOrder(Long productId, int quantity) throws OutOfStockException {
         // Fetch product details from Product Service
@@ -42,15 +44,14 @@ public class OrderService {
             throw new OutOfStockException("Product is out of stock.");
         }
 
-        System.out.println(product);
-        System.out.println(inventory);
-
         inventoryClient.updateInventory(productId, inventory.getQuantity() - quantity);
 
         double totalPrice = product.getPrice() * quantity;
 
         Order order = new Order(null, productId, quantity, totalPrice, "PENDING", LocalDateTime.now());
-        return orderRepository.save(order);
+        Order saved = orderRepository.save(order);
+        System.out.println(paymentClient.startPayment(saved.getId(), totalPrice));
+        return saved;
     }
 
     public String getStatus(Long orderId){
@@ -58,7 +59,7 @@ public class OrderService {
     }
 
     public void updateStatus(Long orderId, String status){
-        Order order = orderRepository.getReferenceById(orderId);
+        Order order = orderRepository.findById(orderId).orElseThrow(NoSuchElementException::new);
         order.setStatus(status);
         orderRepository.save(order);
     }
