@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.mp.ecommerce_platfrom.common_models.model.PaymentDto;
 
 import java.time.LocalDateTime;
 
@@ -24,4 +25,8 @@ public class Payment {
     private String status;
     private String urlToPayment;
     private LocalDateTime paymentDate;
+
+    public PaymentDto toDto(){
+        return new PaymentDto(id, orderId, amount, status, urlToPayment, paymentDate);
+    }
 }

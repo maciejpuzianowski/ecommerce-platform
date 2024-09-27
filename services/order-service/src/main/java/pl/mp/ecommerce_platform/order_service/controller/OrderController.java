@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.mp.ecommerce_platform.order_service.exception.OutOfStockException;
 import pl.mp.ecommerce_platform.order_service.model.Order;
 import pl.mp.ecommerce_platform.order_service.service.OrderService;
+import pl.mp.ecommerce_platfrom.common_models.model.OrderDto;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -20,10 +21,10 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/place")
-    public ResponseEntity<Order> placeOrder(@RequestParam Long productId, @RequestParam int quantity) {
+    public ResponseEntity<OrderDto> placeOrder(@RequestParam Long productId, @RequestParam int quantity) {
         logger.info("Received request to place order for product: {}, quantity: {}", productId, quantity);
         try {
-            return new ResponseEntity<>(orderService.placeOrder(productId, quantity), HttpStatus.CREATED);
+            return new ResponseEntity<>(orderService.placeOrder(productId, quantity).toDto(), HttpStatus.CREATED);
         } catch (OutOfStockException e) {
             logger.error("Order failed: {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);

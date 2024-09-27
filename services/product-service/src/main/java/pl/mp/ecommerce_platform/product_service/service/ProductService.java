@@ -2,11 +2,11 @@ package pl.mp.ecommerce_platform.product_service.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.mp.ecommerce_platform.inventory_service.model.Inventory;
 import pl.mp.ecommerce_platform.product_service.client.InventoryClient;
 import pl.mp.ecommerce_platform.product_service.exception.ProductNotFoundException;
 import pl.mp.ecommerce_platform.product_service.model.Product;
 import pl.mp.ecommerce_platform.product_service.repository.ProductRepository;
+import pl.mp.ecommerce_platfrom.common_models.model.InventoryDto;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class ProductService {
 
     public Product addProduct(Product product, int quantity) {
         Product saved = productRepository.save(product);
-        inventoryClient.addInventory(new Inventory(null, saved.getId(), quantity));
+        inventoryClient.addInventory(new InventoryDto(null, saved.getId(), quantity));
         return productRepository.save(product);
     }
 

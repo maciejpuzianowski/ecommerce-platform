@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.mp.ecommerce_platfrom.common_models.model.OrderDto;
 
 import java.time.LocalDateTime;
 
@@ -23,4 +24,8 @@ public class Order {
     private double totalPrice;
     private String status;
     private LocalDateTime orderDate;
+
+    public OrderDto toDto() {
+        return new OrderDto(id, productId, quantity, totalPrice, status, orderDate);
+    }
 }

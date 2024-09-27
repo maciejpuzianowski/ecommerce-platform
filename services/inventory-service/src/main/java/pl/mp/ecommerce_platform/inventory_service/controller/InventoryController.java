@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.mp.ecommerce_platform.inventory_service.model.Inventory;
 import pl.mp.ecommerce_platform.inventory_service.service.InventoryService;
+import pl.mp.ecommerce_platfrom.common_models.model.InventoryDto;
 
 import java.util.Optional;
 
@@ -21,21 +22,24 @@ public class InventoryController {
     private InventoryService inventoryService;
 
     @GetMapping("/{productId}")
-    public ResponseEntity<Inventory> getInventory(@PathVariable Long productId) {
+    public ResponseEntity<InventoryDto> getInventory(@PathVariable Long productId) {
         Optional<Inventory> opt = inventoryService.getInventoryByProductId(productId);
-        return opt.map(inventory -> new ResponseEntity<>(inventory, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
+        return opt.map(inventory -> new ResponseEntity<>(inventory.toDto(), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    public ResponseEntity<Inventory> addInventory(@RequestBody Inventory inventory) {
-        logger.info("Adding inventory: {}", inventory);
-        return new ResponseEntity<>(inventoryService.addInventory(inventory), HttpStatus.CREATED);
+    public ResponseEntity<InventoryDto> addInventory(@RequestBody InventoryDto inventoryDto) {
+        logger.info("Adding inventory: {}", inventoryDto);
+        Inventory inventory = new Inventory();
+        inventory.setQuantity(inventoryDto.getQuantity());
+        inventory.setProductId(inventoryDto.getProductId());
+        return new ResponseEntity<>(inventoryService.addInventory(inventory).toDto(), HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Inventory> updateInventory(@RequestParam Long productId, @RequestParam int quantity) {
+    public ResponseEntity<InventoryDto> updateInventory(@RequestParam Long productId, @RequestParam int quantity) {
         logger.info("Updating inventory for product ID: {}", productId);
-        return new ResponseEntity<>(inventoryService.updateInventory(productId, quantity), HttpStatus.OK);
+        return new ResponseEntity<>(inventoryService.updateInventory(productId, quantity).toDto(), HttpStatus.OK);
     }
 
     @GetMapping("/{productId}/in-stock")

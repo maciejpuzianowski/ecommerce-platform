@@ -2,14 +2,14 @@ package pl.mp.ecommerce_platform.order_service.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.mp.ecommerce_platform.inventory_service.model.Inventory;
 import pl.mp.ecommerce_platform.order_service.client.InventoryClient;
 import pl.mp.ecommerce_platform.order_service.client.PaymentClient;
 import pl.mp.ecommerce_platform.order_service.client.ProductClient;
 import pl.mp.ecommerce_platform.order_service.exception.OutOfStockException;
 import pl.mp.ecommerce_platform.order_service.model.Order;
 import pl.mp.ecommerce_platform.order_service.repository.OrderRepository;
-import pl.mp.ecommerce_platform.product_service.model.Product;
+import pl.mp.ecommerce_platfrom.common_models.model.InventoryDto;
+import pl.mp.ecommerce_platfrom.common_models.model.ProductDto;
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
@@ -31,10 +31,10 @@ public class OrderService {
 
     public Order placeOrder(Long productId, int quantity) throws OutOfStockException {
         // Fetch product details from Product Service
-        Product product = productClient.getProductById(productId);
+        ProductDto product = productClient.getProductById(productId);
 
         // Check if the product is in stock from Inventory Service
-        Inventory inventory = inventoryClient.getInventoryByProductId(productId);
+        InventoryDto inventory = inventoryClient.getInventoryByProductId(productId);
 
         if (product == null || inventory == null) {
             throw new NoSuchElementException("Product does not exist.");

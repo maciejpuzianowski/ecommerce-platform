@@ -1,0 +1,96 @@
+services:
+  artemis-mq:
+    image: apache/activemq-artemis
+    container_name: artemis-mq
+    ports:
+      - "8161:8161"  # Web Console
+      - "61616:61616"  # JMS
+    volumes:
+      - ./artemis-data:/var/lib/artemis/data  # Persist Artemis data
+    networks:
+      - ecommerce-network
+  eureka-server:
+    image: eureka-server:latest  # Replace with your Eureka Server image
+    container_name: eureka-server
+    build:
+      context: ../discovery/eureka-server  # The directory where Dockerfile for Eureka server is located
+    ports:
+      - "8761:8761"
+    networks:
+      - ecommerce-network
+  config-server:
+    image: config-server:latest  # Replace with your Eureka Server image
+    container_name: config-server
+    build:
+      context: ../config/config-server  # The directory where Dockerfile for Eureka server is located
+    ports:
+      - "8888:8888"
+    networks:
+      - ecommerce-network
+
+#MICROSERVICES
+
+  product-service:
+    image: product-service:latest  # Replace with your built image name
+    container_name: product-service
+    build:
+      context: ../services/product-service  # The directory where Dockerfile for product service is located
+    ports:
+      - "8081:8081"  # Expose the Product Service port
+    depends_on:
+      - eureka-server
+      - config-server
+    restart: on-failure
+    networks:
+      - ecommerce-network
+
+  inventory-service:
+    image: inventory-service:latest  # Replace with your built image name
+    container_name: inventory-service
+    build:
+      context: ../services/inventory-service  # The directory where Dockerfile for inventory service is located
+    ports:
+      - "8082:8082"
+    depends_on:
+      - eureka-server
+      - config-server
+      - product-service
+    restart: on-failure
+    networks:
+      - ecommerce-network
+
+  order-service:
+    image: order-service:latest  # Replace with your built image name
+    container_name: order-service
+    build:
+      context: ../services/order-service  # The directory where Dockerfile for order service is located
+    ports:
+      - "8083:8083"
+    depends_on:
+      - eureka-server
+      - config-server
+      - inventory-service
+      - product-service
+    restart: on-failure
+    networks:
+      - ecommerce-network
+
+  payment-service:
+    image: payment-service:latest  # Replace with your built image name
+    container_name: payment-service
+    build:
+      context: ../services/payment-service  # The directory where Dockerfile for payment service is located
+    ports:
+      - "8084:8084"
+    depends_on:
+      - eureka-server
+      - config-server
+      - order-service
+      - artemis-mq
+    restart: on-failure
+    networks:
+      - ecommerce-network
+
+networks:
+  ecommerce-network:
+    driver: bridge

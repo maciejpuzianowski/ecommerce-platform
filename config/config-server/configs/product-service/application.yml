@@ -1,11 +1,11 @@
 server:
-  port: 8084
+  port: 8081
 
 spring:
   application:
-    name: payment-service
+    name: product-service
   datasource:
-    url: jdbc:h2:mem:paymentdb
+    url: jdbc:h2:mem:productdb
     driverClassName: org.h2.Driver
     username: sa
     password: password
@@ -13,11 +13,7 @@ spring:
       hibernate:
         ddl-auto: update
       database-platform: org.hibernate.dialect.H2Dialect
-  activemq:
-    broker-url: tcp://localhost:61616
-    user: artemis
-    password: artemis
-
-ecommerce-platform:
-  jms:
-    order-update-dest: order-update-dest
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server:8761/eureka/

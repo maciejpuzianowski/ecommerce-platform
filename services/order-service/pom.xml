@@ -85,15 +85,9 @@
 			<version>3.3.4</version>
 		</dependency>
 		<dependency>
-			<groupId>pl.mp.ecommerce-platform</groupId>
-			<artifactId>inventory-service</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>pl.mp.ecommerce-platform</groupId>
-			<artifactId>product-service</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>pl.mp.ecommerce-platfrom.common-models</groupId>
+			<artifactId>common-models</artifactId>
+			<version>1.0-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>

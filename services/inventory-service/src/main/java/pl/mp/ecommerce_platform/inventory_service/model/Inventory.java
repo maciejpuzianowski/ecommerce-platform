@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.mp.ecommerce_platfrom.common_models.model.InventoryDto;
 
 @Entity
 @Data
@@ -20,4 +21,8 @@ public class Inventory {
 
     private Long productId;
     private int quantity;
+
+    public InventoryDto toDto() {
+        return new InventoryDto(id, productId, quantity);
+    }
 }

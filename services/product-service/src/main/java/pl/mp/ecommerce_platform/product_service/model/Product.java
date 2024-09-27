@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.mp.ecommerce_platfrom.common_models.model.ProductDto;
 
 @Entity
 @Data
@@ -21,4 +22,7 @@ public class Product {
     private String description;
     private double price;
 
+    public ProductDto toDto() {
+        return new ProductDto(id, name, description, price);
+    }
 }

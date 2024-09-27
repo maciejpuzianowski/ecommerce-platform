@@ -13,3 +13,8 @@ spring:
       hibernate:
         ddl-auto: update
       database-platform: org.hibernate.dialect.H2Dialect
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server:8761/eureka/
