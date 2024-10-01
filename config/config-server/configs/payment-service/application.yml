@@ -17,6 +17,11 @@ spring:
     broker-url: (tcp://localhost:61616,tcp://artemis-mq:61616)?randomize=false
     user: artemis
     password: artemis
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8086/oauth2/jwks
 
 ecommerce-platform:
   jms:
@@ -25,4 +30,5 @@ ecommerce-platform:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka-server:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
+#      defaultZone: http://eureka-server:8761/eureka/

@@ -2,6 +2,5 @@ spring:
   application:
     name: order-service
   config:
-    fail-fast: false
-#    import: configserver:http://localhost:8888
-    import: configserver:http://config-server:8888
+    import: configserver:http://localhost:8888
+#    import: configserver:http://config-server:8888

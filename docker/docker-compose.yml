@@ -27,6 +27,15 @@ services:
       - "8888:8888"
     networks:
       - ecommerce-network
+  api-gateway:
+    image: api-gateway:latest  # Replace with your Eureka Server image
+    container_name: api-gateway
+    build:
+      context: ../gateway/api-gateway  # The directory where Dockerfile for Eureka server is located
+    ports:
+      - "8085:8085"
+    networks:
+      - ecommerce-network
 
 #MICROSERVICES
 
