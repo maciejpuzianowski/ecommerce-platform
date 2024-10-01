@@ -29,7 +29,7 @@ public class ProductService {
     public Product addProduct(Product product, int quantity) {
         Product saved = productRepository.save(product);
         inventoryClient.addInventory(new InventoryDto(null, saved.getId(), quantity));
-        return productRepository.save(product);
+        return saved;
     }
 
     public Product deleteProduct(Long id) throws ProductNotFoundException {
