@@ -1,6 +1,5 @@
 spring:
   application:
-    name: payment-service
+    name: order-service
   config:
-#    import: configserver:http://localhost:8888
     import: configserver:http://config-server:8888

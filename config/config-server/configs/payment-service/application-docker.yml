@@ -1,11 +1,11 @@
 server:
-  port: 8082
+  port: 8084
 
 spring:
   application:
-    name: inventory-service
+    name: payment-service
   datasource:
-    url: jdbc:h2:mem:inventorydb
+    url: jdbc:h2:mem:paymentdb
     driverClassName: org.h2.Driver
     username: sa
     password: password
@@ -13,15 +13,21 @@ spring:
       hibernate:
         ddl-auto: update
       database-platform: org.hibernate.dialect.H2Dialect
+  activemq:
+    broker-url: (tcp://localhost:61616,tcp://artemis-mq:61616)?randomize=false
+    user: artemis
+    password: artemis
   security:
     oauth2:
       resourceserver:
         jwt:
           jwk-set-uri: http://user-service/oauth2/jwks
-#          jwk-set-uri: http://localhost:8086/oauth2/jwks
+
+ecommerce-platform:
+  jms:
+    order-update-dest: order-update-dest
 
 eureka:
   client:
     serviceUrl:
-#      defaultZone: http://localhost:8761/eureka/
       defaultZone: http://eureka-server:8761/eureka/

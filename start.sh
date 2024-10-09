@@ -10,7 +10,7 @@ build_maven_servers() {
     cd "$service" || { echo "Failed to enter $service directory"; exit 1; }
 
     # Run Maven clean and install
-    mvn clean install -DskipTests || { echo "Maven build failed for $service"; exit 1; }
+    mvn clean install -DskipTests -Pdocker || { echo "Maven build failed for $service"; exit 1; }
 
     # Change back to the root directory
     cd ..
@@ -28,7 +28,7 @@ build_maven_services() {
     cd "services/$service" || { echo "Failed to enter $service directory"; exit 1; }
 
     # Run Maven clean and install
-    mvn clean install -DskipTests || { echo "Maven build failed for $service"; exit 1; }
+    mvn clean install -DskipTests -Pdocker || { echo "Maven build failed for $service"; exit 1; }
 
     # Change back to the root directory
     cd ..

@@ -1,11 +1,11 @@
 server:
-  port: 8086
+  port: 8081
 
 spring:
   application:
-    name: user-service
+    name: product-service
   datasource:
-    url: jdbc:h2:mem:userdb
+    url: jdbc:h2:mem:productdb
     driverClassName: org.h2.Driver
     username: sa
     password: password
@@ -13,11 +13,14 @@ spring:
       hibernate:
         ddl-auto: update
       database-platform: org.hibernate.dialect.H2Dialect
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://user-service/oauth2/jwks
 eureka:
   client:
     serviceUrl:
-#      defaultZone: http://localhost:8761/eureka/
+
       defaultZone: http://eureka-server:8761/eureka/
-jwt:
-  expiration-time: 3600000
-  key-id: 3cfa76ef14937c1c0ea519f8fc #i know it shouldnt be here its just presentation
+
