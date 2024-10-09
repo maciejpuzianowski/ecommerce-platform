@@ -32,6 +32,7 @@ services:
     container_name: api-gateway
     build:
       context: ../gateway/api-gateway  # The directory where Dockerfile for Eureka server is located
+    restart: on-failure
     ports:
       - "8085:8085"
     networks:
@@ -96,6 +97,19 @@ services:
       - config-server
       - order-service
       - artemis-mq
+    restart: on-failure
+    networks:
+      - ecommerce-network
+  user-service:
+    image: user-service:latest  # Replace with your built image name
+    container_name: user-service
+    build:
+      context: ../services/user-service  # The directory where Dockerfile for payment service is located
+    ports:
+      - "8086:8086"
+    depends_on:
+      - eureka-server
+      - config-server
     restart: on-failure
     networks:
       - ecommerce-network

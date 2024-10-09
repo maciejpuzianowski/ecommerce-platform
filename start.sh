@@ -2,7 +2,7 @@
 
 # Function to build each Maven project
 build_maven_servers() {
-  services=("config/config-server" "discovery/eureka-server")
+  services=("config/config-server" "discovery/eureka-server" "gateway/api-gateway")
 
   for service in "${services[@]}"; do
     echo "Building $service..."
@@ -20,7 +20,7 @@ build_maven_servers() {
 
 # Function to build each Maven project
 build_maven_services() {
-  services=("common-models" "inventory-service" "product-service" "order-service" "payment-service")
+  services=("common-models" "inventory-service" "product-service" "order-service" "payment-service" "user-service")
 
   for service in "${services[@]}"; do
     echo "Building $service..."
